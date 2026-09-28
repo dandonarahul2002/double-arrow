@@ -39,16 +39,17 @@ jobs:
 
       - name: Package archives
         run: |
+          chmod +x bin/double-arrow-arm64 bin/double-arrow-x64 Scripts/install-agent.sh Scripts/uninstall.sh
           mkdir -p dist
-          chmod +x bin/double-arrow-arm64 bin/double-arrow-x64
 
-          cp bin/double-arrow-arm64 double-arrow
-          tar -czf dist/double-arrow-macos-arm64.tar.gz double-arrow
-          rm double-arrow
-
-          cp bin/double-arrow-x64 double-arrow
-          tar -czf dist/double-arrow-macos-x64.tar.gz double-arrow
-          rm double-arrow
+          for arch in arm64 x64; do
+            pkg="dist/pkg-$arch"
+            mkdir -p "$pkg"
+            cp "bin/double-arrow-$arch" "$pkg/double-arrow"
+            cp Scripts/install-agent.sh "$pkg/install.sh"
+            cp Scripts/uninstall.sh "$pkg/uninstall.sh"
+            tar -czf "dist/double-arrow-macos-$arch.tar.gz" -C "$pkg" double-arrow install.sh uninstall.sh
+          done
 
       - name: Create or update GitHub Release
         env:

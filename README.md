@@ -19,11 +19,18 @@ alone. Only a clean run of taps within 350ms is caught.
 
 ## Setup
 
-**Download a prebuilt binary:** grab `double-arrow-macos-arm64.tar.gz` (Apple
-Silicon) or `double-arrow-macos-x64.tar.gz` (Intel) from the
+**Option A: download a prebuilt binary.** Grab
+`double-arrow-macos-arm64.tar.gz` (Apple Silicon) or
+`double-arrow-macos-x64.tar.gz` (Intel) from the
 [Releases page](https://github.com/dandonarahul2002/double-arrow/releases),
-extract it, and use the `double-arrow` binary inside in place of
-`bin/double-arrow` below. Otherwise, build from source:
+then:
+
+```
+tar -xzf double-arrow-macos-*.tar.gz
+./install.sh
+```
+
+**Option B: build from source.**
 
 ```
 git clone git@github.com:dandonarahul2002/double-arrow.git
@@ -31,12 +38,11 @@ cd double-arrow
 Scripts/setup.sh
 ```
 
-The script builds the binary, code-signs it, and installs it as a
-LaunchAgent that starts at login and restarts itself if it ever crashes.
-
-It will also open System Settings for you. There, under
-**Privacy & Security > Input Monitoring**, turn on the entry for
-`double-arrow`. This is required for any app that reads raw key events.
+Either way, the script signs the binary and installs it as a LaunchAgent
+that starts at login and restarts itself if it ever crashes. It also
+opens System Settings for you. There, under **Privacy & Security >
+Input Monitoring**, turn on the entry for `double-arrow`. This is
+required for any app that reads raw key events.
 
 Then restart the agent once so it picks up the new permission:
 
@@ -93,7 +99,8 @@ other binding stays instant.
 ## Uninstall
 
 ```
-Scripts/uninstall.sh
+Scripts/uninstall.sh   # from a source checkout
+./uninstall.sh         # from an extracted release tarball
 ```
 
 ## How it works
