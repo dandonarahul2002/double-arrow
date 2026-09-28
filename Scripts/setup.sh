@@ -43,3 +43,8 @@ echo "==> After granting permission, run this to restart the agent:"
 echo "    launchctl kickstart -k gui/\$(id -u)/$LABEL"
 echo ""
 echo "Check it's working: tail -f $LOG_PATH"
+echo ""
+echo "==> Current bindings"
+"$BIN_PATH" list
+echo ""
+echo "Add your own with: $BIN_PATH add"
