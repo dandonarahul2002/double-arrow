@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-14
+    env:
+      IDENTIFIER: com.doublearrow.agent
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build arm64 (Apple Silicon, native)
+        run: |
+          mkdir -p bin
+          swiftc -O Sources/*.swift -o bin/double-arrow-arm64
+
+      - name: Build x86_64 (Intel, cross-compiled)
+        run: |
+          swiftc -target x86_64-apple-macosx11.0 -O Sources/*.swift -o bin/double-arrow-x64
+
+      - name: Verify architectures
+        run: |
+          file bin/double-arrow-arm64
+          file bin/double-arrow-x64
+
+      - name: Ad-hoc codesign
+        run: |
+          codesign --force -s - --identifier "$IDENTIFIER" bin/double-arrow-arm64
+          codesign --force -s - --identifier "$IDENTIFIER" bin/double-arrow-x64
+
+      - name: Package archives
+        run: |
+          mkdir -p dist
+          chmod +x bin/double-arrow-arm64 bin/double-arrow-x64
+
+          cp bin/double-arrow-arm64 double-arrow
+          tar -czf dist/double-arrow-macos-arm64.tar.gz double-arrow
+          rm double-arrow
+
+          cp bin/double-arrow-x64 double-arrow
+          tar -czf dist/double-arrow-macos-x64.tar.gz double-arrow
+          rm double-arrow
+
+      - name: Create or update GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" \
+              dist/double-arrow-macos-arm64.tar.gz \
+              dist/double-arrow-macos-x64.tar.gz \
+              --clobber
+          else
+            gh release create "$TAG" \
+              --generate-notes \
+              dist/double-arrow-macos-arm64.tar.gz \
+              dist/double-arrow-macos-x64.tar.gz
+          fi
