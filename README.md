@@ -118,7 +118,8 @@ tail -f ~/Library/Logs/com.doublearrow.agent.log
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to build, test, and
+propose changes.
 
 ## License
 
