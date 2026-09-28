@@ -19,6 +19,12 @@ alone. Only a clean run of taps within 350ms is caught.
 
 ## Setup
 
+**Download a prebuilt binary:** grab `double-arrow-macos-arm64.tar.gz` (Apple
+Silicon) or `double-arrow-macos-x64.tar.gz` (Intel) from the
+[Releases page](https://github.com/dandonarahul2002/double-arrow/releases),
+extract it, and use the `double-arrow` binary inside in place of
+`bin/double-arrow` below. Otherwise, build from source:
+
 ```
 git clone git@github.com:dandonarahul2002/double-arrow.git
 cd double-arrow
