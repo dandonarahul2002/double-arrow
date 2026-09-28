@@ -1,1 +1,1 @@
-KeyTapListener(remapper: DoubleArrowRemapper()).run()
+CLI.run(arguments: Array(CommandLine.arguments.dropFirst()))
