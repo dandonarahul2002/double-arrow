@@ -64,6 +64,11 @@ After editing, run `Scripts/setup.sh` again to rebuild and reinstall.
 tail -f ~/Library/Logs/com.doublearrow.agent.log
 ```
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to build, test, and
+propose changes.
+
 ## License
 
 MIT, see [LICENSE](LICENSE).
